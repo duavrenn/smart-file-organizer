@@ -1,0 +1,35 @@
+{
+  "name": "smart-file-organizer",
+  "version": "0.1.0",
+  "description": "Cross-platform desktop automation for organizing downloads into categorized folders.",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "lint": "eslint .",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand",
+    "build": "echo 'No build step required for pure JS project'",
+    "docker:build": "docker build -t smart-file-organizer ."
+  },
+  "keywords": [
+    "file-organizer",
+    "downloads",
+    "automation",
+    "nodejs"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "chokidar": "^3.5.4",
+    "dotenv": "^16.3.1",
+    "winston": "^3.10.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "jest": "^30.4.2"
+  }
+}

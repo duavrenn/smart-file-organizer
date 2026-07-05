@@ -1,0 +1,27 @@
+{
+  "watchFolder": "./downloads",
+  "destinationFolders": {
+    "documents": "./organized/Documents",
+    "pictures": "./organized/Pictures",
+    "videos": "./organized/Videos",
+    "music": "./organized/Music",
+    "archives": "./organized/Archives",
+    "installers": "./organized/Installers",
+    "others": "./organized/Others"
+  },
+  "extensionMappings": {
+    "documents": ["pdf", "doc", "docx", "txt", "xls", "xlsx", "ppt", "pptx"],
+    "pictures": ["jpg", "jpeg", "png", "gif", "bmp", "svg"],
+    "videos": ["mp4", "mkv", "mov", "avi", "wmv"],
+    "music": ["mp3", "wav", "flac", "aac"],
+    "archives": ["zip", "rar", "7z", "tar", "gz"],
+    "installers": ["exe", "msi", "dmg", "pkg"],
+    "others": []
+  },
+  "logging": {
+    "level": "info",
+    "json": true,
+    "file": "./logs/application.log"
+  },
+  "previewMode": false
+}
