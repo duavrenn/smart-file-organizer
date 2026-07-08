@@ -4,7 +4,7 @@ const TEMPORARY_EXTENSIONS = new Set(['.crdownload', '.part', '.tmp', '.partial'
 const TEMPORARY_NAME_PATTERNS = [/^~\$.*$/, /^\.~lock\..*#$/, /^\.ds_store$/];
 
 export class FileOrganizer {
-  constructor({ config, logger, fs }) {
+  constructor({ config, logger, fs, conflictResolver } = {}) {
     if (!config || typeof config !== 'object') {
       throw new Error('FileOrganizer requires a config object.');
     }
@@ -12,9 +12,13 @@ export class FileOrganizer {
     this.config = config;
     this.logger = logger || { info: () => {}, warn: () => {}, error: () => {} };
     this.fs = fs;
+    this.conflictResolver = conflictResolver || { resolve: async (p) => ({ success: true, originalPath: p, resolvedPath: p, conflictResolved: false }) };
 
     if (!this.fs || typeof this.fs.stat !== 'function' || typeof this.fs.rename !== 'function') {
       throw new Error('FileOrganizer requires a file system abstraction with stat and rename methods.');
+    }
+    if (typeof this.conflictResolver.resolve !== 'function') {
+      throw new Error('FileOrganizer requires a conflictResolver with a resolve(destinationPath) method.');
     }
   }
 
@@ -51,7 +55,11 @@ export class FileOrganizer {
     const destination = this.getDestinationPath(normalizedPath, category);
 
     // TODO: integrate duplicate detector before moving the file.
-    const moveResult = await this.moveFile(normalizedPath, destination);
+    // Resolve filename conflicts before moving
+    const resolved = await this.conflictResolver.resolve(destination);
+    const finalDestination = resolved && resolved.success ? resolved.resolvedPath : destination;
+
+    const moveResult = await this.moveFile(normalizedPath, finalDestination);
 
     if (!moveResult.success) {
       return {
